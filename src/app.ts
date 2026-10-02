@@ -1,9 +1,7 @@
 import express, {Application, Request, Response} from "express" ; 
-
- import userRoutes from './routes/';
+import { env } from "./config/env";
  import carRoutes from './routes/cars'; 
-
-const PORT = process.env.PORT || 3000; 
+const port = env.port
 
 
  
