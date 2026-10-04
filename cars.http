@@ -24,3 +24,39 @@ content-type: application/json
 GET http://localhost:3000/api/v1/cars HTTP/1.1
 content-type: application/json
 x-api-key: blahblah
+
+### Extra field
+POST {{endpoint}} HTTP/1.1
+content-type: application/json
+
+{ "make": "Ford", "model": "Focus", "colour": "red" }
+
+### Missing model
+POST {{endpoint}} HTTP/1.1
+content-type: application/json
+
+{ "make": "Ford" }
+
+### Empty string make
+POST {{endpoint}} HTTP/1.1
+content-type: application/json
+
+{ "make": "", "model": "Focus" }
+
+### Update just the model → 200
+PUT {{endpoint}}/{{newCar}} HTTP/1.1
+content-type: application/json
+
+{ "model": "Fiesta" }
+
+### Update with bad year → 400
+PUT {{endpoint}}/{{newCar}} HTTP/1.1
+content-type: application/json
+
+{ "year": 1900 }
+
+### Update with empty make → 400
+PUT {{endpoint}}/{{newCar}} HTTP/1.1
+content-type: application/json
+
+{ "make": "" }

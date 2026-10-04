@@ -10,6 +10,7 @@ import { authenticateKey } from './middleware/auth.middleware';
 
 const app: Application = express(); 
 app.use(express.json());
+app.use(logger);
 app.use(authenticateKey);
  app.use('/api/v1/cars', carRoutes); 
 

@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
   import { CarService } from '../services/cars';
     const carService = new CarService();
 import mongoose from 'mongoose';
+import { createCarZSchema } from '../models/cars';
 export class CarController { 
 
  
@@ -38,8 +39,16 @@ export class CarController {
  
 
   createCar = async (req: Request, res: Response): Promise<void> => {
-    try {
-      const newCar = await carService.createCar(req.body);
+  try {
+    const validation = createCarZSchema.safeParse(req.body);
+
+    console.log(validation);
+
+    if (!validation.success) {
+      res.status(400).json({ message: 'Invalid car data', errors: validation.error.issues });
+      return;
+    }
+      const newCar = await carService.createCar(validation.data);
       res.status(201).json(newCar);
     } catch (error) {
       res.status(500).json({ message: 'Error inserting into MongoDB', error });
