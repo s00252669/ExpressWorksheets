@@ -1,47 +1,66 @@
 @endpoint = http://localhost:3000/api/v1/cars
+@apiKey = blahblah
 
-###
+### Get all cars
 GET {{endpoint}} HTTP/1.1
 
 ###
 # @name postACar
 POST {{endpoint}} HTTP/1.1
 content-type: application/json
+x-api-key: {{apiKey}}
 
 { "make" : "make2",
 "model" : "model2"
   }
 
 ###
-
 @newCar = {{postACar.response.body._id}}
 
-###
-GET  {{endpoint}}/{{newCar}} HTTP/3.0
+### Get the car just created
+GET {{endpoint}}/{{newCar}} HTTP/1.1
 content-type: application/json
 
-###
-GET http://localhost:3000/api/v1/cars HTTP/1.1
-content-type: application/json
-x-api-key: blahblah
-
-### Extra field
+### Extra field → 201, colour stripped
 POST {{endpoint}} HTTP/1.1
 content-type: application/json
+x-api-key: {{apiKey}}
 
 { "make": "Ford", "model": "Focus", "colour": "red" }
 
-### Missing model
+### Missing model → 400
 POST {{endpoint}} HTTP/1.1
 content-type: application/json
+x-api-key: {{apiKey}}
 
 { "make": "Ford" }
 
-### Empty string make
+### Empty string make → 400
+POST {{endpoint}} HTTP/1.1
+content-type: application/json
+x-api-key: {{apiKey}}
+
+{ "make": "", "model": "Focus" }
+
+### Too old year → 400
+POST {{endpoint}} HTTP/1.1
+content-type: application/json
+x-api-key: {{apiKey}}
+
+{ "make": "Ford", "model": "Model T", "year": 1920 }
+
+### String year → 400
+POST {{endpoint}} HTTP/1.1
+content-type: application/json
+x-api-key: {{apiKey}}
+
+{ "make": "Ford", "model": "Focus", "year": "old" }
+
+### No key → 401
 POST {{endpoint}} HTTP/1.1
 content-type: application/json
 
-{ "make": "", "model": "Focus" }
+{ "make": "Ford", "model": "Focus" }
 
 ### Update just the model → 200
 PUT {{endpoint}}/{{newCar}} HTTP/1.1
@@ -60,3 +79,10 @@ PUT {{endpoint}}/{{newCar}} HTTP/1.1
 content-type: application/json
 
 { "make": "" }
+
+### Add a car → 201
+POST {{endpoint}} HTTP/1.1
+content-type: application/json
+x-api-key: {{apiKey}}
+
+{ "make": "Renault", "model": "Megane", "year": 2010 }
