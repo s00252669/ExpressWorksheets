@@ -16,7 +16,7 @@ router.get('/', carController.getCars);
 
  
 
-router.get('/:id', carController.getCarById); 
+router.get('/:id', carController.getCarById);  
 
 router.post('/', authenticateKey, validate(createCarZSchema), carController.createCar)
 router.put('/:id', carController.updateCar); 
