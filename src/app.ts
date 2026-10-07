@@ -1,6 +1,5 @@
 import express, {Application, Request, Response} from "express" ; 
 import { env } from "./config/env";
-
  import carRoutes from './routes/cars'; 
      import { connectDB } from './config/database';
 const port = env.port
@@ -9,6 +8,7 @@ import { authenticateKey } from './middleware/auth.middleware';
  import { logger } from './middleware/logger.middleware';
 
 const app: Application = express(); 
+export { app };
 app.use(express.json());
 app.use(logger);
 app.use(authenticateKey);
@@ -34,16 +34,6 @@ res.json({
 
 }); 
 
-const startServer = async () => {
-  await connectDB();
-
-  app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
-  });
-
-};
-
-startServer();
 
  
  
