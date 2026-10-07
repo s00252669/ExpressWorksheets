@@ -11,7 +11,7 @@ const app: Application = express();
 export { app };
 app.use(express.json());
 app.use(logger);
-app.use(authenticateKey);
+
  app.use('/api/v1/cars', carRoutes); 
 
 app.get("/ping", async (_req : Request, res: Response) => { 
@@ -23,7 +23,7 @@ res.json({
  }); 
 
 }); 
-
+app.use(authenticateKey);
  app.get('/nuts', async (_req : Request, res: Response) => { 
 
 res.json({ 

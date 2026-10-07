@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import { createCarZSchema } from "../../models/cars";
 
 const validCar = {
-    "make": "Una",
+    "make": "Ben",
     "model": "0871234567",
     "year": 1980
 }
