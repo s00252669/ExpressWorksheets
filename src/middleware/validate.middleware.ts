@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { Request, Response, NextFunction } from 'express';
+import { ValidationError } from '../utils/apperrors';
 
 export const validate = (schema: z.ZodObject<any>) => (
   req: Request,
@@ -7,7 +8,11 @@ export const validate = (schema: z.ZodObject<any>) => (
   next: NextFunction
 ): void => {
 
-  const validation = schema.safeParse(req.body);
+  const validation = schema.safeParse({
+    body: req.body,
+    query: req.query,
+    params: req.params
+  });
 
   if (!validation.success) {
     res.status(400).json({
@@ -18,6 +23,5 @@ export const validate = (schema: z.ZodObject<any>) => (
   }
 
   req.body = validation.data
-
   next();
 };

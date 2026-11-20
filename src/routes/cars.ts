@@ -4,8 +4,7 @@ import { CarController } from '../controllers/cars';
 import { authenticateKey } from '../middleware/auth.middleware';
 
 import { validate } from '../middleware/validate.middleware';
-import { createCarZSchema } from '../models/cars';
-
+import { createCarZSchema, updateCarZSchema, carParamsSchema } from '../models/cars';
 const router = Router(); 
 
 const carController = new CarController(); 
@@ -22,7 +21,9 @@ router.post('/', authenticateKey, validate(createCarZSchema), carController.crea
 router.put('/:id', carController.updateCar); 
 
 router.delete('/:id', carController.deleteCar); 
-
+router.get('/:id', validate(carParamsSchema), carController.getCarById);
+router.put('/:id', validate(carParamsSchema), validate(updateCarZSchema), carController.updateCar);
+router.delete('/:id', validate(carParamsSchema), carController.deleteCar);
  
 
 export default router;
