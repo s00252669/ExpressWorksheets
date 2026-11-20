@@ -2,6 +2,7 @@ import express, {Application, Request, Response} from "express" ;
 import { env } from "./config/env";
  import carRoutes from './routes/cars'; 
  import { connectDB } from './config/database';
+ import authRoutes from './routes/auth';
  import { errorHandler } from './middleware/error.middleware';
 const port = env.port
 
@@ -16,6 +17,7 @@ app.use(logger);
 app.use(cors());
 
  app.use('/api/v1/cars', carRoutes); 
+ app.use('/api/v1/auth', authRoutes);
  app.use(errorHandler);
 
 app.get("/ping", async (_req : Request, res: Response) => { 

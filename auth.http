@@ -1,0 +1,32 @@
+@endpoint = http://localhost:3000/api/v1
+
+### Register
+POST {{endpoint}}/auth/register HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Ben",
+    "email": "ben@example.com",
+    "password": "testpassword"
+}
+
+### Login
+# @name login
+POST {{endpoint}}/auth/login HTTP/1.1
+content-type: application/json
+
+{
+    "email": "ben@example.com",
+    "password": "testpassword"
+}
+
+###
+@accessToken = {{login.response.body.token}}
+
+### Who am I (with token)
+GET {{endpoint}}/auth/me HTTP/1.1
+Authorization: Bearer {{accessToken}}
+
+### Delete a car with token (put a real car id in)
+DELETE {{endpoint}}/cars/PUT_A_CAR_ID_HERE HTTP/1.1
+Authorization: Bearer {{accessToken}}
