@@ -4,24 +4,22 @@ import { ValidationError } from '../utils/apperrors';
 
 export const validate = (schema: z.ZodObject<any>) => (
   req: Request,
-  res: Response,
+  _res: Response,
   next: NextFunction
 ): void => {
-
   const validation = schema.safeParse({
     body: req.body,
+    params: req.params,
     query: req.query,
-    params: req.params
   });
 
   if (!validation.success) {
-    res.status(400).json({
-      message: 'Validation failed',
-      errors: validation.error.issues
-    });
+    next(new ValidationError('Validation failed', validation.error.issues));
     return;
   }
 
-  req.body = validation.data
+  if (validation.data.body !== undefined) {
+    req.body = validation.data.body;
+  }
   next();
 };
